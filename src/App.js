@@ -4,6 +4,7 @@ import { analyzeImage } from './azure-image-analysis';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
+  const [analysis, setAnalysis] = useState(null);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
