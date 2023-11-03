@@ -18,7 +18,7 @@ const visualFeatures = [
 
 const analyzeImage = async (imageUrl) => {
     const requestUrl = `${endpoint}computervision/imageanalysis:analyze&api-version=2023-02-01-preview&features=${visualFeatures.join(',')}`;
-    log(`requesed Url = ${requestUrl}`);
+    console.log(`requesed Url = ${requestUrl}`);
 
 
     //Analyze the image from imageURL
