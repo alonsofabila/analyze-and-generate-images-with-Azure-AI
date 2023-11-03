@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './stylesheets/App.css';
-import { analyzeImage } from './services/computerVisionService';
+import { analyzeImage } from './azure-image-analysis';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
