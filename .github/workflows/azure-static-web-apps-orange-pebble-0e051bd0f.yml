@@ -32,9 +32,9 @@ jobs:
           api_location: "api" # Api source code path - optional
           output_location: "build" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
-          env:
-            AZURE_SECRET_VISION_KEY: ${{ secrets.AZURE_SECRET_VISION_KEY }}
-            AZURE_SECRET_VISION_ENDPOINT: ${{ secrets.AZURE_SECRET_VISION_ENDPOINT }}
+        env:
+          AZURE_SECRET_VISION_KEY: ${{ secrets.AZURE_SECRET_VISION_KEY }}
+          AZURE_SECRET_VISION_ENDPOINT: ${{ secrets.AZURE_SECRET_VISION_ENDPOINT }}
 
 
   close_pull_request_job:
