@@ -42,4 +42,4 @@ const analyzeImage = async (imageUrl) => {
 
 };
 
-export default analyzeImage;
+export { analyzeImage };
