@@ -17,7 +17,7 @@ const visualFeatures = [
 
 
 const analyzeImage = async (imageUrl) => {
-    const requestUrl = `${endpoint}computervision/imageanalysis:analyze&api-version=2023-02-01-preview&features=${visualFeatures.join(',')}`;
+    const requestUrl = `https://azure-image-analysis.cognitiveservices.azure.com/computervision/imageanalysis:analyze&api-version=2023-02-01-preview&features=${visualFeatures.join(',')}`;
     console.log(`requesed Url = ${requestUrl}`);
 
 
