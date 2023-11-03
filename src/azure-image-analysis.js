@@ -1,5 +1,5 @@
-const key = process.env.VISION_KEY;
-const endpoint = process.env.VISION_ENDPOINT;
+const key = process.env.AZURE_SECRET_VISION_KEY;
+const endpoint = process.env.AZURE_SECRET_VISION_ENDPOINT;
 
 console.log(key);
 console.log(endpoint);
