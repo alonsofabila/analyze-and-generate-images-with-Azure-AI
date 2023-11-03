@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './stylesheets/App.css';
-import analyzeImage from './azure-image-analysis';
+import { analyzeImage } from './services/computerVisionService';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
@@ -10,13 +10,23 @@ function App() {
   };
 
   const handleAnalyzeClick = async () => {
-    try{
+    try {
       const analysis = await analyzeImage(inputValue);
-      console.log(analysis);
+      setAnalysis(analysis);
     } catch (error) {
       console.log(error);
     }
-  };
+  }
+
+  const displayAnalysis = () => {
+    return (
+      <div>
+        <h2>Analysis</h2>
+        <p>Tags: {analysis.tags.map(t => t.name).join(', ')}</p>
+        <p>Caption: {analysis.description.captions[0].text}</p>
+      </div>
+    );
+  }
 
   return (
     <div class="container">
@@ -27,6 +37,7 @@ function App() {
       </label>
       <button onClick={handleAnalyzeClick}>Analyze</button>
       <button>Generate</button>
+      {analysis && displayAnalysis()}
     </div>
   );
 }
