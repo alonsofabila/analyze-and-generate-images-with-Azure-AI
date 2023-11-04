@@ -1,4 +1,4 @@
-const openaikey = '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';
+const openaikey = process.env.REACT_APP_OPENAI_API_KEY;
 
 export const imageGeneration = async (prompt) => {
     
