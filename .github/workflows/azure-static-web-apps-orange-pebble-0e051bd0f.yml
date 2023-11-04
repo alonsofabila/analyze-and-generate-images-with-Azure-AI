@@ -37,8 +37,8 @@ jobs:
           AZURE_SECRET_VISION_ENDPOINT: ${{ secrets.AZURE_SECRET_VISION_ENDPOINT }}
       - name: Debug Secrets
         run: |
-          echo "Vision Key: $AZURE_SECRET_VISION_KEY"
-          echo "Vision Endpoint: $AZURE_SECRET_VISION_ENDPOINT"
+          echo "Vision Key: ${{ secrets.AZURE_SECRET_VISION_KEY }}"
+          echo "Vision Endpoint: ${{ secrets.AZURE_SECRET_VISION_ENDPOINT }}"
 
 
   close_pull_request_job:

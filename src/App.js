@@ -20,13 +20,19 @@ function App() {
   }
 
   const displayAnalysis = () => {
+    if (!analysis || !analysis.metadata || !analysis.metadata.imageType || !analysis.tags || !analysis.description) {
+      return null; // Return null if any required property is missing
+    } 
     return (
       <div>
         <h2>Analysis</h2>
-        <p>Tags: {analysis.tags.map(t => t.name).join(', ')}</p>
+        <p>URL: {analysis.URL}</p>
+        <p>Image Type: {analysis.metadata.imageType.clipArtType}</p>
+        <p>Image Format: {analysis.metadata.imageType.lineDrawingType}</p>
+        <p>Tags: {analysis.tags.map(tag => tag.name).join(', ')}</p>
         <p>Caption: {analysis.description.captions[0].text}</p>
       </div>
-    );
+    )
   }
 
   return (
