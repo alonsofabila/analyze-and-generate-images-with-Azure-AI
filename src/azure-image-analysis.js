@@ -39,7 +39,7 @@ const analyzeImage = async (imageUrl) => {
 
         const analysis = await response.json();
 
-        return { "URL": urlToAnalyze, ...analysis};
+        return { "URL": imageUrl, ...analysis};
     } catch (error) {
         console.log(error);
         throw error;
