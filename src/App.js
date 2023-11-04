@@ -1,6 +1,6 @@
 import React,{ useState } from 'react';
-import { computerVision, isConfigured as ComputerVisionIsConfigured } from './azure-image-analysis';
-import { imageGeneration} from './openai-api';
+import { computerVision, isConfigured as ComputerVisionIsConfigured } from './azure-image-analysis.js';
+import { imageGeneration} from './open-api.js';
 function App() {
   const [input, setInput] = useState(null);
   const [analysis, setAnalysis] = useState(null);
