@@ -4,8 +4,8 @@
 
 
 // Authentication requirements
-const key = process.env.REACT_APP_AZURE_COMPUTER_VISION_KEY;
-const endpoint = process.env.REACT_APP_AZURE_COMPUTER_VISION_ENDPOINT;
+const key = 'c3cdae36a419425ea5b6dba2ad9c5656';
+const endpoint = 'https://azure-image-analysis.cognitiveservices.azure.com/';
 
 console.log(`key = ${key}`)
 console.log(`endpoint = ${endpoint}`)
