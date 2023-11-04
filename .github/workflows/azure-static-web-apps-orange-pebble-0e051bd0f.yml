@@ -35,10 +35,12 @@ jobs:
         env:
           AZURE_SECRET_VISION_KEY: ${{ secrets.AZURE_SECRET_VISION_KEY }}
           AZURE_SECRET_VISION_ENDPOINT: ${{ secrets.AZURE_SECRET_VISION_ENDPOINT }}
+          REACT_APP_OPENAI_API_KEY: ${{ secrets.REACT_APP_OPENAI_API_KEY }}
       - name: Debug Secrets
         run: |
-          echo "Vision Key: ${{ secrets.AZURE_SECRET_VISION_KEY }}"
-          echo "Vision Endpoint: ${{ secrets.AZURE_SECRET_VISION_ENDPOINT }}"
+          echo "Vision Key: $AZURE_SECRET_VISION_KEY"
+          echo "Vision Endpoint: $AZURE_SECRET_VISION_ENDPOINT"
+          echo "OpenAI API Key: $REACT_APP_OPENAI_API_KEY"
 
 
   close_pull_request_job:

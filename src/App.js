@@ -1,51 +1,122 @@
-import React, { useState } from 'react';
-import './stylesheets/App.css';
-import { analyzeImage } from './azure-image-analysis';
-
+import React,{ useState } from 'react';
+import { computerVision, isConfigured as ComputerVisionIsConfigured } from './azure-cognitiveservices-computervision';
+import { imageGeneration} from './openai-api';
 function App() {
-  const [inputValue, setInputValue] = useState('');
+  const [input, setInput] = useState(null);
   const [analysis, setAnalysis] = useState(null);
+  const [generatedImage, setGeneratedImage] = useState(null);
+  const [processing, setProcessing] = useState(false);
+  const [cursor, setCursor] = useState(null);
+  const [promptEntered, setPromptEntered] = useState(false);
+  
+  const handleChange = (e) => {
+    setInput(e.target.value)
+    setCursor(e.target.selectionStart);
+  }
+  
+  const onFileUrlEntered = (e) => {
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    // hold UI
+    setProcessing(true);
+    setPromptEntered(false);
+    setAnalysis(null);
+
+    computerVision(input || null).then((item) => {
+      // reset state/form
+      setAnalysis(item);
+      setInput("");
+      setProcessing(false);
+    });
+
   };
 
-  const handleAnalyzeClick = async () => {
-    try {
-      const analysis = await analyzeImage(inputValue);
-      setAnalysis(analysis);
-    } catch (error) {
-      console.log(error);
-    }
+  const onPromptEntered = (e) => {
+    // hold UI
+    setProcessing(true);
+    setPromptEntered(true);
+    setGeneratedImage(null);
+
+    imageGeneration(input || null).then((item) => {
+      // reset state/form
+      setGeneratedImage(item);
+      console.log(`item = ${item}`)
+      setInput("");
+      setProcessing(false);
+    });
   }
 
-  const displayAnalysis = () => {
-    if (!analysis || !analysis.metadata || !analysis.metadata.imageType || !analysis.tags || !analysis.description) {
-      return null; // Return null if any required property is missing
-    } 
+  const PrettyPrintJson = (data) => {
+    return (<div><pre>{JSON.stringify(data, null, 2)}</pre></div>);
+  }
+
+  const DisplayResults = () => {
+    if (generatedImage != null){
+      return (
+        <div>
+          <h2>Image Generation</h2>
+          <div><img src={generatedImage.URL} height="200" border="1" alt={generatedImage.prompt} /></div>
+          {PrettyPrintJson(generatedImage)}
+        </div>
+      )
+    }
+    else{
+      return (
+        <div>
+          <h2>Computer Vision Analysis</h2>
+          <div><img src={analysis.URL} height="200" border="1" alt={(analysis.captionResult && analysis.captionResult.text ? analysis.captionResult.text : "can't find caption")} /></div>
+          {PrettyPrintJson(analysis)}
+        </div>
+      )
+      }
+  };
+  
+  const AnalyzeOrGenerate = () => {
     return (
-      <div>
-        <h2>Analysis</h2>
-        <p>URL: {analysis.URL}</p>
-        <p>Image Type: {analysis.metadata.imageType.clipArtType}</p>
-        <p>Image Format: {analysis.metadata.imageType.lineDrawingType}</p>
-        <p>Tags: {analysis.tags.map(tag => tag.name).join(', ')}</p>
-        <p>Caption: {analysis.description.captions[0].text}</p>
+    <div>
+      <h1>Computer vision</h1>
+      {!processing &&
+        <div>
+          <div>
+            <label>Insert URL or type prompt: </label>
+          </div>
+          <div>
+            <input autoFocus="autofocus" type="text" id="input" defaultValue={input} placeholder="Enter URL to analyze or textual prompt to generate an image" size="50" onChange={handleChange} 
+            onFocus={(e) => {e.target.selectionStart = cursor;}}></input>
+          </div>
+          <button onClick={onFileUrlEntered}>Analyze</button>
+          &nbsp;
+          <button onClick={onPromptEntered}>Generate</button>
+        </div>
+      }
+      {processing && <div>Processing</div>}
+      <hr />
+      {!promptEntered && analysis && DisplayResults()}
+      {promptEntered && generatedImage && DisplayResults()}
       </div>
     )
   }
+  
+  const CantAnalyze = () => {
+    return (
+      <div>Key and/or endpoint not configured for cognitive services</div>
+    )
+  }
+  
+  function Render() {
+    const cvReady = ComputerVisionIsConfigured();
+    
+
+    if (cvReady) {
+      return <AnalyzeOrGenerate />;
+    }
+    return <CantAnalyze />;
+  }
 
   return (
-    <div class="container">
-      <h1>Computer Vision</h1>
-      <label>
-        <input type='text' placeholder='Enter URL to analyze or textual prompt to generate an image' value={inputValue}
-          onChange={handleInputChange}></input>
-      </label>
-      <button onClick={handleAnalyzeClick}>Analyze</button>
-      <button>Generate</button>
-      {analysis && displayAnalysis()}
+    <div>
+      {Render()}
     </div>
+    
   );
 }
 
